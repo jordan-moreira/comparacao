@@ -1,0 +1,4 @@
+            |Vetor [1000]                |Vetor [10.000]                |Vetor [100.000]
+Algoritmo   |Tempo (ms): Iterações: Trocas |Tempo (ms): Iterações: Trocas   | Tempo (ms):  Iterações:   Trocas
+Bubblesort  |5.00 ms   : 498174   : 251901 | 777.00 ms: 49994405 : 25049120 |79122.00 ms: 704939044 : -1806345808
+Mergsort    | 2.00 ms  : 9984     : 9984   |12.00 ms  : 136320   : 136320   |208.00 ms  : 1692992   :  1692992
