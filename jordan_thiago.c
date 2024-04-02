@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-void mergeSort_intercala(int *v, int esq, int meio, int dir, int *iteracoes, int *trocas)
+void mergeSort_intercala(int *vetor, int esq, int meio, int dir, int *iteracoes, int *trocas)
 {
     int i, j, k;
     int a_tam = meio - esq + 1;
@@ -10,27 +10,27 @@ void mergeSort_intercala(int *v, int esq, int meio, int dir, int *iteracoes, int
     int *a = (int *)malloc(sizeof(int) * a_tam);
     int *b = (int *)malloc(sizeof(int) * b_tam);
     for (i = 0; i < a_tam; i++)
-        a[i] = v[i + esq];
+        a[i] = vetor[i + esq];
     for (i = 0; i < b_tam; i++)
-        b[i] = v[i + meio + 1];
+        b[i] = vetor[i + meio + 1];
     for (i = 0, j = 0, k = esq; k <= dir; k++)
     {
         (*iteracoes)++;
         if (i == a_tam)
-            v[k] = b[j++];
+            vetor[k] = b[j++];
         else if (j == b_tam)
-            v[k] = a[i++];
+            vetor[k] = a[i++];
         else if (a[i] < b[j])
-            v[k] = a[i++];
+            vetor[k] = a[i++];
         else
-            v[k] = b[j++];
+            vetor[k] = b[j++];
         (*trocas)++;
     }
     free(a);
     free(b);
 }
 
-void mergeSort_iter(int *v, int n, int *iteracoes, int *trocas)
+void mergeSort(int *vetor, int n, int *iteracoes, int *trocas)
 {
     int esq, dir;
     int salto = 1;
@@ -42,14 +42,14 @@ void mergeSort_iter(int *v, int n, int *iteracoes, int *trocas)
             dir = esq + 2 * salto;
             if (dir > n)
                 dir = n;
-            mergeSort_intercala(v, esq, esq + salto - 1, dir - 1, iteracoes, trocas);
+            mergeSort_intercala(vetor, esq, esq + salto - 1, dir - 1, iteracoes, trocas);
             esq = esq + 2 * salto;
         }
         salto = 2 * salto;
     }
 }
 
-void Bolha(int *A, int n, int *iteracoes, int *trocas)
+void Bolha(int *vetor, int n, int *iteracoes, int *trocas)
 {
     int i, j;
     int temp;
@@ -62,31 +62,32 @@ void Bolha(int *A, int n, int *iteracoes, int *trocas)
         for (j = 0; j < i; j++)
         {
             (*iteracoes)++;
-            if (A[j] < A[j + 1])
+            if (vetor[j] < vetor[j + 1])
             {
-                temp = A[j];
-                A[j] = A[j + 1];
-                A[j + 1] = temp;
+                temp = vetor[j];
+                vetor[j] = vetor[j + 1];
+                vetor[j + 1] = temp;
                 troca = 1;
                 (*trocas)++;
+                printf("%d",&trocas);
             }
         }
     }
 }
 
-void printArray(int arr[], int size)
+void printArray(int vetor[], int size)
 {
     for (int i = 0; i < size; i++)
-        printf("%d ", arr[i]);
+        printf("%d ", vetor[i]);
     printf("\n");
 }
 
 int *generateRandomArray(int size)
 {
-    int *arr = (int *)malloc(size * sizeof(int));
+    int *vetor = (int *)malloc(size * sizeof(int));
     for (int i = 0; i < size; i++)
-        arr[i] = rand() % 1000; // Números aleatórios entre 0 e 999
-    return arr;
+        vetor[i] = rand() % 1000; // Números aleatórios entre 0 e 999
+    return vetor;
 }
 
 int main()
@@ -104,7 +105,7 @@ int main()
         printf("%s\t", algorithms[i]);
         for (int j = 0; j < sizesCount; j++)
         {
-            int *arr = generateRandomArray(sizes[j]);
+            int *vetor = generateRandomArray(sizes[j]);
             int iteracoes = 0, trocas = 0;
             clock_t begin, end;
             double time_spent;
@@ -112,16 +113,16 @@ int main()
             begin = clock();
             if (i == 0)
             {
-                Bolha(arr, sizes[j], &iteracoes, &trocas);
+                Bolha(vetor, sizes[j], &iteracoes, &trocas);
             }
             else
             {
-                mergeSort_iter(arr, sizes[j], &iteracoes, &trocas);
+                mergeSort(vetor, sizes[j], &iteracoes, &trocas);
             }
             end = clock();
             time_spent = (double)(end - begin) / CLOCKS_PER_SEC * 1000; // Tempo em milissegundos
             printf("%.2f ms\t%d\t%d\t", time_spent, iteracoes, trocas);
-            free(arr);
+            free(vetor);
         }
         printf("\n");
     }
